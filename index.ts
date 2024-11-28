@@ -25,7 +25,7 @@ app.use("/admins", adminsRoutes)
 app.use("/dashboard", dashboardRoutes)
 
 app.get('/', (req, res) => {
-  res.send('API: Sistema de Controle de Veículos')
+  res.send('API: Sistema de Estoque de Ótica')
 })
 
 app.listen(port, () => {
