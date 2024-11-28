@@ -22,16 +22,16 @@ router.get("/", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-  const { clienteId, oculosId, descricao } = req.body
+  const { clienteId, oculosId, endereco } = req.body
 
-  if (!clienteId || !oculosId || !descricao) {
-    res.status(400).json({ erro: "Informe clienteId, oculosId e descricao" })
+  if (!clienteId || !oculosId || !endereco) {
+    res.status(400).json({ erro: "Informe clienteId, oculosId e endereco" })
     return
   }
 
   try {
     const compra = await prisma.compra.create({
-      data: { clienteId, oculosId, descricao }
+      data: { clienteId, oculosId, endereco }
     })
     const dados = await prisma.compra.findUnique({
       where: { id: Number(compra.id) },
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
 
     enviaEmail(dados?.cliente.nome as string,
       dados?.cliente.email as string,
-      dados?.descricao as string)
+      dados?.endereco as string)
     res.status(201).json(compra)
   } catch (error) {
     res.status(400).json(error)
@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
 })
 
 async function enviaEmail(nome: string, email: string,
-  descricao: string) {
+  endereco: string) {
 
   const transporter = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
@@ -67,7 +67,7 @@ async function enviaEmail(nome: string, email: string,
     to: email, // list of receivers
     subject: "Re: Compra Ótica Avenida", // Subject line
     html: `<h3>Estimado Cliente: ${nome}</h3>
-           <h3>Compra: ${descricao}</h3>
+           <h3>Compra: ${endereco}</h3>
            <h3>Seu pedido foi enviado.</h3>
            <p>Muito obrigado pela compra!</p>
            <p>Ótica Avenida</p>`
