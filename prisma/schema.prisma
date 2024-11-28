@@ -58,7 +58,7 @@ model Compra {
   clienteId   String   @db.VarChar(36)
   oculos      Oculos    @relation(fields: [oculosId], references: [id])
   oculosId    Int
-  descricao   String   @db.VarChar(255)
+  endereco    String   @db.VarChar(255)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@map("compras")
