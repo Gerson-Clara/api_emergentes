@@ -88,4 +88,7 @@ enum Formatos {
   Quadrado
   Redondo
   Irregular
+  Piloto
+  Gatinho
+  Retangular
 }
