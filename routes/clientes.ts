@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { Router } from "express"
+import { verificaToken } from "../middewares/verificaToken"
 import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
@@ -144,6 +145,19 @@ router.get("/:id", async (req, res) => {
         email: cliente.email
       })
     }
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
+
+router.delete("/:id", verificaToken, async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const cliente = await prisma.cliente.delete({
+      where: { id: id }
+    })
+    res.status(200).json(cliente)
   } catch (error) {
     res.status(400).json(error)
   }
